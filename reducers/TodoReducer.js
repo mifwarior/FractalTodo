@@ -83,13 +83,15 @@ function RemoveReducer(state = [], action) {
 function EditReducer(state = [], action) {
   const { id, name, text, done } = action.payload;
 
-  const todo = state.find((todo) => {
-    return todo.id === id;
+  return state.map((todo) => {
+     if(todo.id === id){
+      return { 
+        ...todo, 
+        name: name || todo.name,
+        text: text || todo.text,
+        done: (done === undefined ? todo.done : done)
+      }
+     }
+     return todo;
   });
-
-  todo.name = name || todo.name;
-  todo.text = text || todo.text;
-  todo.done = (done === undefined ? todo.done : done);
-
-  return [...state];
 }
