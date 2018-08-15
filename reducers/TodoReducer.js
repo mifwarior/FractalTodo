@@ -1,28 +1,30 @@
 import { actions } from "../constants";
 
-export default function TodoReducer(state = [] , action) {
-  
-  switch(action.type){
+export default function TodoReducer(state = [], action) {
+
+  switch (action.type) {
     case actions.TODO_ADD:
       return AddReducer(state, action);
     case actions.TODO_DONE:
-      return  DoneReducer(state, action);
+      return DoneReducer(state, action);
     case actions.TODO_REMOVE:
       return RemoveReducer(state, action);
+    case actions.TODO_EDIT:
+      return EditReducer(state, action);
   }
   return state;
 }
 
-function AddReducer(state = [], action){
+function AddReducer(state = [], action) {
   const before = state[state.length - 1];
-  const id = (before?before.id:0) + 1;
-  const {name, text, parentId} = action.payload;
+  const id = (before ? before.id : 0) + 1;
+  const { name, text, parentId } = action.payload;
 
-  if(parentId){
-    const parent = state.find((todo)=>{
+  if (parentId) {
+    const parent = state.find((todo) => {
       return todo.id === parentId;
     })
-    if(parent) {
+    if (parent) {
       parent.childs.push(id);
     }
   }
@@ -30,24 +32,24 @@ function AddReducer(state = [], action){
     ...state,
     {
       id,
-      done:false,
+      done: false,
       name,
       text,
-      childs:[]
+      childs: []
     }
   ];
 }
 
-function DoneReducer(state = [], action){
+function DoneReducer(state = [], action) {
   const { id } = action.payload;
-  const todo = state.find((todo)=>{
+  const todo = state.find((todo) => {
     return todo.id === id;
   })
   const complete = [...todo.childs, id];
 
-  return state.map((todo)=>{
-    if( complete.indexOf(todo.id) !== -1 ){
-      return {...todo, done: true}
+  return state.map((todo) => {
+    if (complete.indexOf(todo.id) !== -1) {
+      return { ...todo, done: true }
     }
     return todo;
   });
@@ -56,7 +58,7 @@ function DoneReducer(state = [], action){
 function RemoveReducer(state = [], action) {
 
   const { id, parentId } = action.payload;
-  
+
   return state.filter((todo) => {
 
     return todo.id !== id;
@@ -76,4 +78,18 @@ function RemoveReducer(state = [], action) {
     return todo;
   })
 
+}
+
+function EditReducer(state = [], action) {
+  const { id, name, text, done } = action.payload;
+
+  const todo = state.find((todo) => {
+    return todo.id === id;
+  });
+
+  todo.name = name || todo.name;
+  todo.text = text || todo.text;
+  todo.done = (done === undefined ? todo.done : done);
+
+  return [...state];
 }

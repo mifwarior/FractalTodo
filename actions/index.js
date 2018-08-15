@@ -25,3 +25,9 @@ export function DoneTodo(id) {
   }
 }
 
+export function EditoTodo(id, name, text, done) {
+  return {
+    type: actions.TODO_EDIT,
+    payload: { id, name, text, done }
+  }
+}
