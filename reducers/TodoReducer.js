@@ -41,7 +41,7 @@ function AddReducer(state = [], action) {
 }
 
 function DoneReducer(state = [], action) {
-  const { id } = action.payload;
+  const { id, done } = action.payload;
   const todo = state.find((todo) => {
     return todo.id === id;
   })
@@ -49,7 +49,7 @@ function DoneReducer(state = [], action) {
 
   return state.map((todo) => {
     if (complete.indexOf(todo.id) !== -1) {
-      return { ...todo, done: true }
+      return { ...todo, done: done }
     }
     return todo;
   });

@@ -1,10 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, Switch, View } from 'react-native';
 
-const CheckBox = ({checked, onClick}) => {
+const CheckBox = ({checked, onChange}) => {
   return (
-    <View> 
-      <Text>CheckBox</Text>
+    <View>
+      <Switch value={checked} onValueChange={onChange}/>
     </View>
   );
 }

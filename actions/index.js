@@ -18,10 +18,10 @@ export function RemoveTodo(id, parentId) {
   }
 }
 
-export function DoneTodo(id) {
+export function DoneTodo(id, done) {
   return {
     type: actions.TODO_DONE,
-    payload: { id }
+    payload: { id, done }
   }
 }
 

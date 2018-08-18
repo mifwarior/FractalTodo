@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { View } from 'react-native';
 import Todo from './Todo';
 
-const TodoList = ({todos}) => {
-  const todoElements = todo.map((todo)=>{
-    return (<Todo key={todo.id} {...todo} />);
+const TodoList = ({todos, onChange}) => {
+  
+  const todoElements = todos.map((todo)=>{
+    return (<Todo key={todo.id} {...todo} onChange={(done)=>{ onChange(todo.id, done)}} />);
   });
   return (
     <View> 
