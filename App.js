@@ -8,6 +8,8 @@ import TodoList from './containers/TodoList';
 import { Provider } from 'react-redux'
 import ButtonAdd from './components/Button';
 import Header from './components/Header';
+import {List, ListItem} from 'react-native-elements';
+import Swipeable from './components/Swipeable';
 
 const initialStore = {
   todos: [
@@ -33,7 +35,10 @@ class App extends React.Component {
     return (
       <View style={Styles.container}>
         <Header />
-        <TodoList />
+        <List>
+          <ListItem title="test title"/>
+          <Swipeable/>
+        </List>
         <ButtonAdd />
       </View>
     );

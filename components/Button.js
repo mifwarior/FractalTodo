@@ -1,6 +1,7 @@
 import React from 'react';
 import { Button } from 'react-native';
 
+
 import Styles from './../Styles'
 
 const ButtonAdd = ({onClick = ()=>{}}) => {
