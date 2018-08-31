@@ -40,16 +40,27 @@ function AddReducer(state = [], action) {
   ];
 }
 
+
+function GetChildIds(id, todos){
+  const todo = todos.find((todo)=>{
+    return todo.id === id;
+  });
+  if(todo){
+    let result = [...todo.childs];
+    todo.childs.forEach((id)=>{
+      result = [...result, ...GetChildIds(id, todos)];
+    })
+    return result;
+  }
+  return [];
+}
 function DoneReducer(state = [], action) {
   const { id, done } = action.payload;
-  const todo = state.find((todo) => {
-    return todo.id === id;
-  })
-  const complete = [...todo.childs, id];
-
-  return state.map((todo) => {
-    if (complete.indexOf(todo.id) !== -1) {
-      return { ...todo, done: done }
+  const ids = [id, ...GetChildIds(id, state)];
+  console.log(ids);
+  return state.map((todo)=>{
+    if(ids.indexOf(todo.id) !== -1){
+      return {... todo, done};
     }
     return todo;
   });

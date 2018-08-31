@@ -37,7 +37,6 @@ class App extends React.Component {
         <Header />
         <List>
           <ListItem title="test title"/>
-          <Swipeable/>
         </List>
         <ButtonAdd />
       </View>

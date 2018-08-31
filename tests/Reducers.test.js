@@ -1,5 +1,7 @@
-import reducer from "./../reducers/index";
-import { AddTodo, RemoveTodo, DoneTodo, EditoTodo } from "./../actions"
+import TodoReducer from "./../reducers/TodoReducer";
+import NavigationReducer from "./../reducers/NavigationReducer";
+
+import { AddTodo, RemoveTodo, DoneTodo, EditoTodo, GoInto, GoHome } from "./../actions"
 
 describe('Reducers tests', () => {
   const parent = {
@@ -27,8 +29,9 @@ describe('Reducers tests', () => {
       childs: []
     }
 
-    let state = [];
-    state = reducer(state, AddTodo(todo.name, todo.text));
+    let state = []
+
+    state = TodoReducer(state, AddTodo(todo.name, todo.text));
 
     expect(state.length).toBe(1);
     expect(state[0]).toEqual(todo);
@@ -36,9 +39,10 @@ describe('Reducers tests', () => {
 
   test('Add todo (fractal)', () => {
     let state = [];
+ 
 
-    state = reducer(state, AddTodo(parent.name, parent.text, undefined));
-    state = reducer(state, AddTodo(child.name, child.text, parent.id));
+    state = TodoReducer(state, AddTodo(parent.name, parent.text, undefined));
+    state = TodoReducer(state, AddTodo(child.name, child.text, parent.id));
 
     expect(state.length).toBe(2);
     expect(state[0]).toEqual(parent);
@@ -48,12 +52,12 @@ describe('Reducers tests', () => {
   test('Remove todo (simple)', () => {
 
     let state = [
-      parent,
-      child
-    ];
+        parent,
+        child
+      ];
 
-    state = reducer(state, RemoveTodo(parent.id));
-    state = reducer(state, RemoveTodo(child.id));
+    state = TodoReducer(state, RemoveTodo(parent.id));
+    state = TodoReducer(state, RemoveTodo(child.id));
 
     expect(state.length).toBe(0);
 
@@ -61,15 +65,15 @@ describe('Reducers tests', () => {
 
   test('Remove todo (fractal)', () => {
     let state = [
-      parent,
-      child
-    ];
+        parent,
+        child
+      ];
 
-    state = reducer(state, RemoveTodo(child.id, parent.id));
+    state = TodoReducer(state, RemoveTodo(child.id, parent.id));
     expect(state[0]).toEqual({
       ...parent, childs: []
     });
-    state = reducer(state, RemoveTodo(parent.id));
+    state = TodoReducer(state, RemoveTodo(parent.id));
 
     expect(state.length).toBe(0);
   });
@@ -77,15 +81,16 @@ describe('Reducers tests', () => {
 
   test('Done todo (simple)', () => {
     let state = [
-      parent,
-      child
-    ];
+        parent,
+        child
+      ];
 
-    state = reducer(state, DoneTodo(child.id));
+    state = TodoReducer(state, DoneTodo(child.id));
+
     expect(state[1]).toEqual({
       ...child, done: true
     });
-    state = reducer(state, DoneTodo(parent.id));
+    state = TodoReducer(state, DoneTodo(parent.id));
 
     expect(state[0]).toEqual({
       ...parent, done: true
@@ -96,21 +101,23 @@ describe('Reducers tests', () => {
 
   test('Done todo (fractal)', () => {
     let state = [
-      parent,
-      child
-    ];
+        parent,
+        {...child, id:2, childs:[3]},
+        {...child, id:3, childs:[]},
+      ];
+    const len = state.length;
 
-    state = reducer(state, DoneTodo(parent.id));
+    state = TodoReducer(state, DoneTodo(parent.id));
 
-    expect(state[1]).toEqual({
-      ...child, done: true
+    expect(state[2]).toEqual({
+      ...child, id:3, childs:[], done: true
     });
 
     expect(state[0]).toEqual({
       ...parent, done: true
     });
 
-    expect(state.length).toBe(2);
+    expect(state.length).toBe(len);
   });
 
 
@@ -120,27 +127,38 @@ describe('Reducers tests', () => {
     const done = true;
 
     let state = [
-      parent
-    ];
+        parent,
+      ];
 
-    state = reducer(state, EditoTodo(parent.id, name));
+    state = TodoReducer(state, EditoTodo(parent.id, name));
 
     expect(state[0]).toEqual({
       ...parent, name
     });
 
-    state = reducer(state, EditoTodo(parent.id, name, text));
+    state = TodoReducer(state, EditoTodo(parent.id, name, text));
 
     expect(state[0]).toEqual({
       ...parent, name, text
     });
-    state = reducer(state, EditoTodo(parent.id, name, text, done));
+    state = TodoReducer(state, EditoTodo(parent.id, name, text, done));
 
     expect(state[0]).toEqual({
       ...parent, name, text, done
     });
 
     expect(state.length).toBe(1);
+  });
+
+  test('Navigation', () => {
+
+    let state = 0;
+    state = NavigationReducer(state, GoInto(2));
+
+    expect(state).toBe(2);
+    state = NavigationReducer(state, GoHome());
+
+    expect(state).toBe(0);
   });
 
 });

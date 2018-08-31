@@ -1,3 +1,9 @@
 import TodoReducer from './TodoReducer';
+import NavigationReducer from './NavigationReducer';
 
-export default TodoReducer;
+import {combineReducers} from 'redux';
+
+export default combineReducers({
+  "activeTodo": NavigationReducer,
+  "todos": TodoReducer
+});

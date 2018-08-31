@@ -6,7 +6,7 @@ export function AddTodo(name, text, parentId) {
     payload: {
        name,
        text,
-       parentId
+       parentId: parentId || 0
       }
   }
 }
@@ -18,7 +18,7 @@ export function RemoveTodo(id, parentId) {
   }
 }
 
-export function DoneTodo(id, done) {
+export function DoneTodo(id, done = true) {
   return {
     type: actions.TODO_DONE,
     payload: { id, done }
@@ -29,5 +29,18 @@ export function EditoTodo(id, name, text, done) {
   return {
     type: actions.TODO_EDIT,
     payload: { id, name, text, done }
+  }
+}
+
+export function GoInto(id) {
+  return {
+    type: actions.GO_INTO,
+    payload: { id }
+  }
+}
+
+export function GoHome() {
+  return {
+    type: actions.GO_HOME
   }
 }
