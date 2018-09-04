@@ -12,6 +12,7 @@ const bluePrints = {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#fff',
+    position: "relative"
   },
   centerX: {
     ...bluePrints.centerX
@@ -46,6 +47,17 @@ const styles = StyleSheet.create({
   title: {
     color: "white",
     fontSize: 24
+  },
+  list:{
+    width:"100%",
+    //flex: 1,
+    //position:"absolute",
+    height:"90%",
+    //paddingTop: 50,
+    //paddingBottom: 50,
+
+    borderColor: '#ff0000',
+    borderWidth:2
   }
 });
 

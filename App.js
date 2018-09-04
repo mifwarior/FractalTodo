@@ -24,10 +24,14 @@ const initialStore = {
     { id: 9, done: false, name: "name9", text: "text9", childs: [] },
     { id: 10, done: false, name: "name10", text: "text10", childs: [] },
     { id: 11, done: false, name: "name11", text: "text11", childs: [] },
+    { id: 12, done: false, name: "name11", text: "text11", childs: [] },
+    { id: 13, done: false, name: "name11", text: "text11", childs: [] },
+    { id: 14, done: false, name: "name11", text: "text11", childs: [] },
+    { id: 15, done: false, name: "name11", text: "text11", childs: [] },
   ],
   activeTodo: 0
 }
-const store = createStore(reducer, initialStore.todos);
+const store = createStore(reducer, initialStore);
 
 
 class App extends React.Component {
@@ -35,9 +39,7 @@ class App extends React.Component {
     return (
       <View style={Styles.container}>
         <Header />
-        <List>
-          <ListItem title="test title"/>
-        </List>
+        <TodoList/>
         <ButtonAdd />
       </View>
     );
